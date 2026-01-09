@@ -1,5 +1,5 @@
 class GameState:
-    def __init__(self, table, currentPlayer, playablePosition):
+    def __init__(self, table=None, currentPlayer=1, playablePosition=-1):
         """
         :param table:
         The table is a list, with each little tic-tac-toe game.
@@ -11,7 +11,11 @@ class GameState:
         :param playablePosition:
         the position where the current player can play
         -1 if he can play anywhere
+
+        The default parameters are for the initial state
         """
+        if table is None:
+            table = [[0 for _ in range(9)] for _ in range(9)]
         self.table = table
         self.currentPlayer = currentPlayer
         self.playablePos = playablePosition
@@ -24,18 +28,18 @@ class GameState:
         vers2 = [0, 0, 0]
         for i in range(3):
             for j in range(3):
-                if table[i][j] == 1:
+                if table[i*3+j] == 1:
                     hors1[i] += 1
                     vers1[j] += 1
-                if table[i][j] == -1:
+                if table[i*3+j] == -1:
                     hors2[i] += 1
                     vers2[j] += 1
         diag1 = diag2 = antidiag1 = antidiag2 = 0
         for i in range(3):
-            if table[i][i] == 1: diag1 += 1
-            if table[i][i] == -1: diag2 += 1
-            if table[i][2 - i] == 1: antidiag1 += 1
-            if table[i][2 - i] == -1: antidiag2 += 1
+            if table[i*3+i] == 1: diag1 += 1
+            if table[i*3+i] == -1: diag2 += 1
+            if table[i*3+2 - i] == 1: antidiag1 += 1
+            if table[i*3+2 - i] == -1: antidiag2 += 1
         if diag1 == 3 or hors1[0] == 3 or hors1[1] == 3 or hors1[2] == 3\
                 or vers1[0] == 3 or vers1[1] == 3 or vers1[2] == 3:
             return 1
@@ -70,9 +74,9 @@ class GameState:
         mini_win = self.find_mini_win(new_table[bigPos])
         if mini_win != 0:
             new_table[bigPos] = mini_win
-        new_current_layer = -self.currentPlayer
+        new_current_player = -self.currentPlayer
         if isinstance(self.table[smallPos], list):
             new_playable_pos = smallPos
         else:
             new_playable_pos = -1
-        return GameState(new_table, new_current_layer, new_playable_pos)
+        return GameState(new_table, new_current_player, new_playable_pos)
