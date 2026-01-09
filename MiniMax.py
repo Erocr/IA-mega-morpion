@@ -37,6 +37,16 @@ class MiniMax(AI):
                 if max_depth > 0:
                     self.create_tree(next_state, next_node, max_depth-1)
 
+    def refresh_visited_game_states(self):
+        self.visited_game_states = {}
+
+        def aux(tree):
+            self.visited_game_states[tree.game_state.get_hash()] = tree
+            for child in tree.get_childs():
+                aux(child)
+
+        aux(self.tree)
+
     def chose_action(self, game_state, actions):
         self.create_tree(game_state, self.tree)
         values = []
@@ -50,5 +60,6 @@ class MiniMax(AI):
                 possible_results.append(i)
         res = random.choice(possible_results)
         self.tree = childs[res]
+        self.refresh_visited_game_states()
         return res
 

@@ -17,7 +17,8 @@ class PlayerAI(AI):
         while True:
             s = input("Que jouez vous >>> ")
             try:
-                a, b = s.split(" ")
+                if len(s) == 2: a, b = s[0], s[1]
+                else: a, b = s.split(" ")
                 i = int(a.strip())
                 j = int(b.strip())
                 res = actions.index((i, j))
