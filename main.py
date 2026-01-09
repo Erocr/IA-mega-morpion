@@ -1,6 +1,7 @@
 from Game import *
 from AI import *
+from MiniMax import MiniMax
 
 
-game = Game(PlayerAI(), RandomAI())
+game = Game(MiniMax(lambda gs: 0), PlayerAI())
 game.play()

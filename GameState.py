@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class GameState:
     def __init__(self, table=None, currentPlayer=1, playablePosition=-1):
         """
@@ -14,6 +17,7 @@ class GameState:
 
         The default parameters are for the initial state
         """
+        assert playablePosition == -1 or isinstance(table[playablePosition], list), "pfff, bug de merde"
         if table is None:
             table = [[0 for _ in range(9)] for _ in range(9)]
         self.table = table
@@ -70,18 +74,19 @@ class GameState:
             return res
 
     def play_action(self, bigPos, smallPos):
-        new_table = self.table.copy()
+        new_table = deepcopy(self.table)
         new_table[bigPos][smallPos] = self.currentPlayer
         mini_win = self.find_mini_win(new_table[bigPos])
-        if mini_win != 0:
+        if 0 not in new_table[bigPos]:
+            new_table[bigPos] = 0
+        elif mini_win != 0:
             new_table[bigPos] = mini_win
         new_current_player = -self.currentPlayer
-        if isinstance(self.table[smallPos], list):
+        if isinstance(new_table[smallPos], list):
             new_playable_pos = smallPos
         else:
             new_playable_pos = -1
         return GameState(new_table, new_current_player, new_playable_pos)
-
 
     def draw_game(self):
         for i in range(9):
@@ -129,3 +134,21 @@ class GameState:
             print("")
             if i % 3 == 2:
                 print("---|---|---|")
+
+    def get_hash(self):
+        res = ""
+        for i in range(9):
+            if isinstance(self.table[i], list):
+                for j in range(9):
+                    if self.table[i][j] == 0:
+                        res += "0"
+                    elif self.table[i][j] == 1:
+                        res += "1"
+                    else:
+                        res += "2"
+            elif self.table[i] == 1:
+                res += "1"*9
+            else:
+                res += "2"*9
+        return int(res, 3) * self.currentPlayer
+
