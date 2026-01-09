@@ -1,9 +1,6 @@
 from Game import *
+from AI import *
 
 
-game = PlayerVsPlayer()
-while True:
-    game.draw_game()
-    print(game.actions)
-    i = int(input())
-    game.play(i)
+game = Game(PlayerAI(), PlayerAI())
+game.play()
