@@ -57,9 +57,10 @@ class GameState:
         if self.playablePos == -1:
             res = []
             for bigPos in range(len(self.table)):
-                for smallPos in range(len(self.table[bigPos])):
-                    if self.table[bigPos][smallPos] == 0:
-                        res.append((bigPos, smallPos))
+                if isinstance(self.table[bigPos], list):
+                    for smallPos in range(len(self.table[bigPos])):
+                        if self.table[bigPos][smallPos] == 0:
+                            res.append((bigPos, smallPos))
             return res
         else:
             res = []
