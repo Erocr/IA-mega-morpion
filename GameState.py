@@ -94,10 +94,12 @@ class GameState:
                 if self.table[big_pos] == 1:
                     if small_line == small_col == 1:
                         print("X", end="")
-                    if (small_col, small_line) == (0, 0) or (small_col, small_line) == (2, 2):
+                    elif (small_col, small_line) == (0, 0) or (small_col, small_line) == (2, 2):
                         print("\\", end="")
-                    if (small_col, small_line) == (2, 0) or (small_col, small_line) == (0, 2):
+                    elif (small_col, small_line) == (2, 0) or (small_col, small_line) == (0, 2):
                         print("/", end="")
+                    else:
+                        print(" ", end="")
                 elif self.table[big_pos] == -1:
                     """
                     .-.
